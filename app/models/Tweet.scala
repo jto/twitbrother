@@ -43,8 +43,6 @@ object Tweet{
     
     val stopwords: List[String] = StopAnalyzer.ENGLISH_STOP_WORDS_SET.toList.asInstanceOf[List[String]] ::: List("http", "rt") ::: ((0 to 10).toList map(_.toString))
     
-    
-    //TODO add RT, http, etc to stopwrods    
     val analyzer = new SnowballAnalyzer(Version.LUCENE_30,"English", stopwords.toArray)
     val tokenStream = analyzer.tokenStream("contents", new StringReader(acc))
     val termAtt = tokenStream.getAttribute(classOf[TermAttribute]).asInstanceOf[TermAttribute]
@@ -54,7 +52,7 @@ object Tweet{
        if(tokenStream.incrementToken){
           sum += 1
           val term = termAtt.term
-          countRep(tokenStream, if(occ contains term) occ updated(term, occ(term) + 1) else occ updated(term, 1))
+          countRep(tokenStream, occ updated(term, occ.getOrElse(term, 0) + 1))
         }
         else
           occ
