@@ -9,7 +9,7 @@ object Application extends Controller {
     
     def index(user: String) = {
         val tweets = Tweet.getForUser(user)
-        val tags = Tweet getTags tweets
+        val tags = Tweet getTags(tweets) take 20
         render(tags)
     }
     

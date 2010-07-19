@@ -41,7 +41,11 @@ object Tweet{
     
     val acc = ("" /: tweets){ _ + _.text }
     
-    val analyzer = new SnowballAnalyzer(Version.LUCENE_30,"English", StopAnalyzer.ENGLISH_STOP_WORDS_SET)
+    val stopwords: List[String] = StopAnalyzer.ENGLISH_STOP_WORDS_SET.toList.asInstanceOf[List[String]] ::: List("http", "rt") ::: ((0 to 10).toList map(_.toString))
+    
+    
+    //TODO add RT, http, etc to stopwrods    
+    val analyzer = new SnowballAnalyzer(Version.LUCENE_30,"English", stopwords.toArray)
     val tokenStream = analyzer.tokenStream("contents", new StringReader(acc))
     val termAtt = tokenStream.getAttribute(classOf[TermAttribute]).asInstanceOf[TermAttribute]
     
