@@ -6,6 +6,7 @@ import scala.io.Source
 import scala.xml._
 import scala.collection.JavaConversions._
 import scala.math._
+import scala.annotation.tailrec
 
 import play._
 import play.cache._
@@ -48,7 +49,7 @@ object Tweet{
     val termAtt = tokenStream.getAttribute(classOf[TermAttribute]).asInstanceOf[TermAttribute]
     
     var sum = 0
-    def countRep(tokenStream: TokenStream, occ:  Map[String, Int]): Map[String, Int] = {
+    @tailrec def countRep(tokenStream: TokenStream, occ:  Map[String, Int]): Map[String, Int] = {
        if(tokenStream.incrementToken){
           sum += 1
           val term = termAtt.term
