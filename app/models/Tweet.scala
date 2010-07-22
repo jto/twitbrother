@@ -22,8 +22,8 @@ class Tweet(val id: Long, val text: String){
 }
 
 object Tweet{
-  lazy val url = Play.configuration.getProperty("twitbrother.api.status.url")
-  lazy val frequencies: Map[String, Double] = loadFrequencies
+  val url = Play.configuration.getProperty("twitbrother.api.status.url")
+  val frequencies: Map[String, Double] = loadFrequencies
   
   def apply(id: Long, text: String) = new Tweet(id, text)
   def unapply(t: Tweet) = Some((t.id, t.text))
